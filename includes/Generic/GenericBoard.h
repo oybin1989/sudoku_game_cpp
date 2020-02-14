@@ -62,10 +62,12 @@ namespace wubinboardgames
         {
           if(genericBoard.board[row][col].isVacant())
           {
-            row_str << "0" << " ";
+            row_str.width(2);
+            row_str << '0' << " ";
           }
           else
           {
+            row_str.width(2);
             row_str << genericBoard.board[row][col] << " ";
           }
           if ((col + 1) % cubic_width == 0)

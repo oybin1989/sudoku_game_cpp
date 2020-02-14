@@ -344,7 +344,7 @@ namespace wubinboardgames
     }
     template<typename SudokuBoard>
     SudokuBoard GenerateSolvableBoard(const LEVEL & level = LEVEL::MEDIUM,
-                                      const int & minimum_empties = SudokuBoard::width * SudokuBoard::width / 4)
+                                      const int & minimum_empties = SudokuBoard::width * SudokuBoard::width / 2.5)
     {
       typedef typename SudokuBoard::Cell Cell;
       typedef typename Cell::ValueType ValueType;
