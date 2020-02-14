@@ -45,7 +45,7 @@ sudoku_diagnose:
 
 sudoku_testing:
 	$(CC) -O2 -D_testing -o bin/sudoku_testing_$(OS) --std=c++11 -I./includes -pthread src/SudokuMain.cpp src/SudokuGame.cpp
-	bin/sudoku_testing
+	bin/sudoku_testing_$(OS)
 
 sudoku_debug:
 	$(CC) -g  $(WARNING_OPTIONS) -o bin/sudoku_debug_$(OS) --std=c++11 -I./includes src/SudokuMain.cpp src/SudokuGame.cpp -lpthread
