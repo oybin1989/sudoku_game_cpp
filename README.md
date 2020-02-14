@@ -1,11 +1,11 @@
 # sudoku_game_cpp
 ## Generic Sudoku Game
-: Run in terminal 
-: Developed in C++11
-: Support different types of Sudoku
-: Level evaluation
-: Game generation with given level
-: Load/Write from/to files
+- Run in terminal 
+- Developed in C++11
+- Support different types of Sudoku
+- Level evaluation
+- Game generation with given level
+- Load/Write from/to files
 
 ## Run
 
@@ -17,6 +17,7 @@ bin/sudoku_Linux
 #### To run on MacOS
 ```bash
 bin/sudoku_Darwin
+```
 
 ## Build
 
@@ -46,8 +47,6 @@ make sudoku_diagnose
 
 ## Note
 
-#### Binaries are going to be generated under bin folder.
-
-#### Bunch of board files are under bin folder.
-
-#### You may need access to write a game board to a file.
+Binaries are going to be generated under bin folder.
+Bunch of board files are under bin folder.
+You may need access to write a game board to a file.
