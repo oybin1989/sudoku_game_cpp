@@ -113,6 +113,7 @@ namespace wubinboardgames
       }
       std::cout << std::endl <<"New Board Is Generated: " << std::endl << std::endl;
       std::cout << board << std::endl << std::endl;
+      return true;
     }
 
     template<typename GameBoard>
