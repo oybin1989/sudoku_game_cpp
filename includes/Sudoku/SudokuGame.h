@@ -7,6 +7,7 @@
 #include <mutex>
 #include <chrono>
 #include <functional> // std::ref
+#include <memory> // shared_ptr for multi-threading
 
 #include "SudokuEngine.h"
 
@@ -46,14 +47,13 @@ namespace wubinboardgames
     }
 
     template<typename GameBoard>
-    void RoutineToGenerateBoard(GameBoard & board, const LEVEL & level)
+    void RoutineToGenerateBoard(std::shared_ptr<GameBoard> shared_board, const LEVEL level)
     {
-      GameBoard work_board;
-      work_board = GenerateSolvableBoard<GameBoard>(level);
+      GameBoard work_board{GenerateSolvableBoard<GameBoard>(level)};
       writting_board_mutex.lock();
       if(is_work_done == false)
       {
-        board = work_board;
+        *shared_board = work_board;
         is_work_done = true;
       }
       writting_board_mutex.unlock();
@@ -70,6 +70,7 @@ namespace wubinboardgames
       std::cout << "\033[1;33m3. Samurai \033[0m" << std::endl<< std::endl;
       std::cout << "\033[1;33m4. Extreme \033[0m" << std::endl<< std::endl;
       LEVEL level;
+      std::shared_ptr<GameBoard> shared_board = std::make_shared<GameBoard>();
       while(option > 4)
       {
         std::cout << "\033[1;32mPlease Select A Valid Option: \033[0m" << std::endl << std::endl;
@@ -100,11 +101,9 @@ namespace wubinboardgames
       is_work_done = false;
       writting_board_mutex.unlock();
 
-      std::thread work_threads[4];
       for(auto i = 0; i < 4; ++i)
       {
-        work_threads[i] = std::thread(RoutineToGenerateBoard<GameBoard>, std::ref(board), std::ref(level));
-        work_threads[i].detach();
+        std::thread(RoutineToGenerateBoard<GameBoard>, shared_board, level).detach();
       }
       std::cout <<"Four threads start..." << std::endl << std::endl;
       unsigned int percent = 0;
@@ -116,6 +115,7 @@ namespace wubinboardgames
         std::cout <<"Generating..." << percent <<" %" << std::endl << std::endl;
       }
       std::cout << std::endl <<"New Board Is Generated: " << std::endl << std::endl;
+      board = *shared_board;
       std::cout << board << std::endl << std::endl;
       return true;
     }

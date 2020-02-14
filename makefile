@@ -35,14 +35,18 @@ endif
 all: sudoku
 
 sudoku:
-	$(CC) -O2 $(STATIC_LINK) -o bin/sudoku --std=c++11 -I./includes -pthread src/SudokuMain.cpp src/SudokuGame.cpp
+	$(CC) -O2 -o bin/sudoku --std=c++11 -I./includes -pthread src/SudokuMain.cpp src/SudokuGame.cpp
+
+sudoku_static:
+	$(CC) -O2 $(STATIC_LINK) -o bin/sudoku_static --std=c++11 -I./includes -pthread src/SudokuMain.cpp src/SudokuGame.cpp
+
 
 sudoku_diagnose:
-	$(CC) -O2 $(STATIC_LINK) $(WARNING_OPTIONS) -o bin/sudoku --std=c++11 -I./includes -pthread src/SudokuMain.cpp src/SudokuGame.cpp
+	$(CC) -O2 $(WARNING_OPTIONS) -o bin/sudoku_diagnose --std=c++11 -I./includes -pthread src/SudokuMain.cpp src/SudokuGame.cpp
 
 sudoku_testing:
-	$(CC) -O2 $(STATIC_LINK) -D_testing -o bin/sudoku --std=c++11 -I./includes -pthread src/SudokuMain.cpp src/SudokuGame.cpp
-	bin/sudoku
+	$(CC) -O2 -D_testing -o bin/sudoku_testing --std=c++11 -I./includes -pthread src/SudokuMain.cpp src/SudokuGame.cpp
+	bin/sudoku_testing
 
 sudoku_debug:
-	$(CC) -g $(STATIC_LINK) $(WARNING_OPTIONS) -o bin/sudoku --std=c++11 -I./includes -pthread src/SudokuMain.cpp src/SudokuGame.cpp
+	$(CC) -g  $(WARNING_OPTIONS) -o bin/sudoku_debug --std=c++11 -I./includes src/SudokuMain.cpp src/SudokuGame.cpp -lpthread
