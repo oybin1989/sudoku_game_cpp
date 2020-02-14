@@ -6,18 +6,22 @@
 #include <thread>
 #include <mutex>
 #include <chrono>
-#include <functional> // std::ref
-#include <memory> // shared_ptr for multi-threading
+#include <memory> // std::shared_ptr for multi-threading
 
 #include "SudokuEngine.h"
 
-static std::mutex writting_board_mutex;
-static bool is_work_done = false;
+/* 
+  SudokuGame is a set of template functions to implement UI of Sudoku Game. 
+*/
+
+static std::mutex writting_board_mutex; //global mutex for multiple threads
+static bool is_work_done = false; // global bool state for multi-threading
 
 namespace wubinboardgames
 {
   namespace sudoku
   {
+    // no template, put implementation into a translation unit
     void DisplayOptionsMenu();
 
     template<typename GameBoard>
@@ -46,6 +50,13 @@ namespace wubinboardgames
       return false;
     }
 
+    /*
+      The RoutineToGenerateBoard is run by four threads. Each thread tries to find
+      a solvable board with a given level. Each thread has a shared_ptr refering to the
+      board to be returned. board is guarded by the mutex lock.
+      The first thread completing the job will change the is_work_done and set the board.
+      Other threads will discard the result and simply exit.
+    */
     template<typename GameBoard>
     void RoutineToGenerateBoard(std::shared_ptr<GameBoard> shared_board, const LEVEL level)
     {
@@ -58,6 +69,7 @@ namespace wubinboardgames
       }
       writting_board_mutex.unlock();
     }
+
 
     template<typename GameBoard>
     bool GenerateNewGame(GameBoard & board)
@@ -97,12 +109,15 @@ namespace wubinboardgames
         default:
           break;
       }
+      // set is_work_done back to false
       writting_board_mutex.lock();
       is_work_done = false;
       writting_board_mutex.unlock();
 
       for(auto i = 0; i < 4; ++i)
       {
+        // start 4 threads for 4-core cpu.
+        // do not pass any local reference to thread.
         std::thread(RoutineToGenerateBoard<GameBoard>, shared_board, level).detach();
       }
       std::cout <<"Four threads start..." << std::endl << std::endl;
@@ -112,10 +127,13 @@ namespace wubinboardgames
       {
         std::this_thread::sleep_for(std::chrono::seconds(1));
         percent += 10;
+        // update the progress state
         std::cout <<"Generating..." << percent <<" %" << std::endl << std::endl;
       }
       std::cout << std::endl <<"New Board Is Generated: " << std::endl << std::endl;
       board = *shared_board;
+      // shared_board lives longer than this function execution. It is fine as
+      // it is shared_ptr.
       std::cout << board << std::endl << std::endl;
       return true;
     }
@@ -167,6 +185,7 @@ namespace wubinboardgames
           case 1:
           case 2:
           {
+            // check solution does not fill the board.
             std::vector<GameBoard> solutions = SearchSolution<GameBoard>(board);
             if(1 == solutions.size())
             {
