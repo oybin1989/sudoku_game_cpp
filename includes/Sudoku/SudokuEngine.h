@@ -26,7 +26,8 @@ namespace wubinboardgames
       EASY = 3000,
       MEDIUM = 30000,
       HARD = 50000,
-      SAMURAI = 100000
+      SAMURAI = 500000,
+      EXTREME = 1000000
     };
 
     template<typename SudokuBoard>
@@ -42,8 +43,8 @@ namespace wubinboardgames
       bool cubicFlags[width][width] = {{false}};
 
 
-      auto row = 0, col = 0;
-      for(auto index = 0; index < end_index; ++index)
+      unsigned int row = 0, col = 0;
+      for(unsigned int index = 0; index < end_index; ++index)
       {
         row = index / width;
         col = index % width;
@@ -82,8 +83,8 @@ namespace wubinboardgames
     {
       constexpr unsigned int width = SudokuBoard::width;
       constexpr unsigned int end_index = width * width;
-      auto row = 0, col = 0;
-      for(auto index = 0; index < end_index; ++index)
+      unsigned int row = 0, col = 0;
+      for(unsigned int index = 0; index < end_index; ++index)
       {
         row = index / width;
         col = index % width;
@@ -152,14 +153,14 @@ namespace wubinboardgames
 
       const ValueType value = static_cast<ValueType>(cell);
 
-      for(auto x = 0; x < width; ++x)
+      for(unsigned int x = 0; x < width; ++x)
       {
         if(board[row_index][x] == value || board[x][col_index] == value) 
           return false;
       }
-      for(auto row = (row_index/grid_width) * grid_width; row < ((row_index/grid_width + 1) * grid_width); ++row)
+      for(unsigned int row = (row_index/grid_width) * grid_width; row < ((row_index/grid_width + 1) * grid_width); ++row)
       {
-        for(auto col = (col_index/grid_width) * grid_width; col < ((col_index/grid_width + 1) * grid_width); ++col)
+        for(unsigned int col = (col_index/grid_width) * grid_width; col < ((col_index/grid_width + 1) * grid_width); ++col)
         {
           if(board[row][col] == value)
             return false;
@@ -169,7 +170,7 @@ namespace wubinboardgames
     }
 
     template<typename SudokuBoard>
-    std::vector<SudokuBoard> SearchSolution(const SudokuBoard & board, int * num_of_retries = nullptr)
+    std::vector<SudokuBoard> SearchSolution(const SudokuBoard & board, unsigned int * num_of_retries = nullptr)
     {
       constexpr const int width = SudokuBoard::width;
       typedef typename SudokuBoard::Cell Cell;
@@ -263,7 +264,7 @@ namespace wubinboardgames
     template<typename SudokuBoard>
     LEVEL LevelEvaluate(const SudokuBoard & board)
     {
-      int num_of_retries = 0;
+      unsigned int num_of_retries = 0;
       std::vector<SudokuBoard> solutions = SearchSolution<SudokuBoard>(board, &num_of_retries);
 
       if(0 == solutions.size())
@@ -281,7 +282,10 @@ namespace wubinboardgames
       if(num_of_retries < LEVEL::HARD)
         return LEVEL::HARD;
 
-      return LEVEL::SAMURAI;
+      if(num_of_retries < LEVEL::SAMURAI)
+        return LEVEL::SAMURAI;
+
+      return LEVEL::EXTREME;
     }
     template<typename SudokuBoard>
     SudokuBoard GenerateFinalBoard()
@@ -299,11 +303,11 @@ namespace wubinboardgames
       std::vector<std::list<ValueType>> cells_candidate_values;
       std::list<ValueType> cell_default_values;
 
-      for(auto i = 0; i < value_width; ++i)
+      for(unsigned int i = 0; i < value_width; ++i)
       {
         cell_default_values.push_back(minimum + i);
       }
-      for(auto i = 0; i < board_width * board_width; ++i)
+      for(unsigned int i = 0; i < board_width * board_width; ++i)
       {
         cells_candidate_values.push_back(cell_default_values);
       }
@@ -344,7 +348,7 @@ namespace wubinboardgames
     }
     template<typename SudokuBoard>
     SudokuBoard GenerateSolvableBoard(const LEVEL & level = LEVEL::MEDIUM,
-                                      const int & minimum_empties = SudokuBoard::width * SudokuBoard::width / 2.5)
+                                      const unsigned int & minimum_empties = SudokuBoard::width * SudokuBoard::width / 2.5)
     {
       typedef typename SudokuBoard::Cell Cell;
       typedef typename Cell::ValueType ValueType;
@@ -411,8 +415,6 @@ namespace wubinboardgames
   template<typename SudokuBoard>
   SudokuBoard GenerateRandomBoard()
   {
-      typedef typename SudokuBoard::Cell Cell;
-      typedef typename Cell::ValueType ValueType;
       constexpr unsigned int width = SudokuBoard::width;
       constexpr unsigned int end_index = width * width;
 

@@ -68,8 +68,9 @@ namespace wubinboardgames
       std::cout << "\033[1;33m1. Medium " << std::endl << std::endl;
       std::cout << "\033[1;33m2. Hard \033[0m" << std::endl << std::endl;
       std::cout << "\033[1;33m3. Samurai \033[0m" << std::endl<< std::endl;
+      std::cout << "\033[1;33m4. Extreme \033[0m" << std::endl<< std::endl;
       LEVEL level;
-      while(option > 3)
+      while(option > 4)
       {
         std::cout << "\033[1;32mPlease Select A Valid Option: \033[0m" << std::endl << std::endl;
         std::cin.clear();
@@ -89,6 +90,9 @@ namespace wubinboardgames
           break;
         case 3:
           level = LEVEL::SAMURAI;
+          break;
+        case 4:
+          level = LEVEL::EXTREME;
         default:
           break;
       }
@@ -207,8 +211,11 @@ namespace wubinboardgames
               case LEVEL::HARD:
                 std::cout <<"\033[1;33mIt is a hard-level game. \033[0m" << std::endl << std::endl;
                 break;
+              case LEVEL::SAMURAI:
+                std::cout << "\033[1;31mIt is a samurai-level game! \033[0m" << std::endl << std::endl;
+                break;
               default:
-                std::cout << "\033[1;31mIt is a samurai-level game! Have fun...\033[0m" << std::endl << std::endl;
+                std::cout << "\033[1;31mIt is an extrem-level game! Have fun...\033[0m" << std::endl << std::endl;
             }
             break;
           }

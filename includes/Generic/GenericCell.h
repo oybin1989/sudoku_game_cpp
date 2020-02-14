@@ -14,7 +14,7 @@ namespace wubinboardgames
     static constexpr T values_length = WIDTH;
     typedef T ValueType;
 
-    GenericCell(unsigned int x, unsigned int y, T value=MIN-1);
+    GenericCell(unsigned int x, unsigned int y, T raw_value=MIN-1);
     GenericCell(T=MIN-1);
     // rule of five
     virtual ~GenericCell() = default;
@@ -22,8 +22,8 @@ namespace wubinboardgames
     GenericCell(GenericCell && another) = default;
     GenericCell & operator=(GenericCell && another) = default;
     GenericCell & operator=(const GenericCell & another) = default;
-    GenericCell & operator+=(const ValueType & value);
-    GenericCell & operator=(const ValueType & value);
+    GenericCell & operator+=(const ValueType & raw_value);
+    GenericCell & operator=(const ValueType & raw_value);
     bool operator==(const GenericCell & another) const;
     bool operator==(const ValueType & another_value) const;
     GenericCell & operator++();
@@ -47,10 +47,10 @@ namespace wubinboardgames
       is >> cell.value;
       return is;
     }
-    friend GenericCell operator+(const GenericCell & cell, const ValueType & value)
+    friend GenericCell operator+(const GenericCell & cell, const ValueType & raw_value)
     {
       GenericCell new_cell(cell);
-      new_cell += value;
+      new_cell += raw_value;
       return new_cell;
     }
   private:
@@ -59,15 +59,15 @@ namespace wubinboardgames
   };
 
   template<typename T, T MIN, unsigned int WIDTH>
-  GenericCell<T, MIN, WIDTH>::GenericCell(unsigned int x, unsigned int y, T value) : position(x, y), value(value) {}
+  GenericCell<T, MIN, WIDTH>::GenericCell(unsigned int x, unsigned int y, T raw_value) : position(x, y), value(raw_value) {}
 
   template<typename T, T MIN, unsigned int WIDTH>
-  GenericCell<T, MIN, WIDTH>::GenericCell(T value) : position(255, 255), value(value) {}
+  GenericCell<T, MIN, WIDTH>::GenericCell(T raw_value) : position(255, 255), value(raw_value) {}
 
   template<typename T, T MIN, unsigned int WIDTH>
-  GenericCell<T, MIN, WIDTH> & GenericCell<T, MIN, WIDTH>::operator=(const ValueType & value)
+  GenericCell<T, MIN, WIDTH> & GenericCell<T, MIN, WIDTH>::operator=(const ValueType & raw_value)
   {
-    this->value = value;
+    this->value = raw_value;
     return *this;
   }
 
@@ -78,9 +78,9 @@ namespace wubinboardgames
   }
 
   template<typename T, T MIN, unsigned int WIDTH>
-  GenericCell<T, MIN, WIDTH> & GenericCell<T, MIN, WIDTH>::operator+=(const ValueType & value)
+  GenericCell<T, MIN, WIDTH> & GenericCell<T, MIN, WIDTH>::operator+=(const ValueType & raw_value)
   {
-    this->value += value;
+    this->value += raw_value;
     return *this;
   }
 

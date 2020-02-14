@@ -55,10 +55,10 @@ namespace wubinboardgames
     {
       std::string content;
       const unsigned int cubic_width = std::sqrt(GenericBoard::width);
-      for(auto row = 0; row < width; ++row)
+      for(unsigned int row = 0; row < width; ++row)
       {
         std::stringstream row_str;
-        for(auto col = 0; col < width; ++col)
+        for(unsigned int col = 0; col < width; ++col)
         {
           if(genericBoard.board[row][col].isVacant())
           {
@@ -108,7 +108,7 @@ namespace wubinboardgames
     static_assert(width > 3, "Width of the board cannot be less than 4");
     constexpr unsigned int end_index = width * width;
     unsigned int row = 0, col = 0;
-    for(int index = 0; index < end_index; ++index)
+    for(unsigned int index = 0; index < end_index; ++index)
     {
       row = index / width;
       col = index % width;
