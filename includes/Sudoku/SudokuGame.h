@@ -6,9 +6,8 @@
 #include <thread>
 #include <mutex>
 #include <chrono>
-#include <functional>
+#include <functional> // std::ref
 
-#include <sys/stat.h>
 #include "SudokuEngine.h"
 
 static std::mutex writting_board_mutex;
@@ -199,13 +198,16 @@ namespace wubinboardgames
                 std::cout <<"\033[1;41mSolution is not unique. \033[0m "<< std::endl << std::endl;
                 break;
               case LEVEL::EASY:
-                std::cout <<"\033[1;32mIt is an Easy-level game. \033[0m" << std::endl << std::endl;
+                std::cout <<"\033[1;32mIt is an easy-level game. \033[0m" << std::endl << std::endl;
+                break;
+              case LEVEL::MEDIUM:
+                std::cout <<"\033[1;33mIt is a medium-level game. \033[0m" << std::endl << std::endl;
                 break;
               case LEVEL::HARD:
-                std::cout <<"\033[1;33mIt is a Hard-level game. \033[0m" << std::endl << std::endl;
+                std::cout <<"\033[1;33mIt is a hard-level game. \033[0m" << std::endl << std::endl;
                 break;
               default:
-                std::cout << "\033[1;31mIt is a Samurai-level game! Have fun...\033[0m" << std::endl << std::endl;
+                std::cout << "\033[1;31mIt is a samurai-level game! Have fun...\033[0m" << std::endl << std::endl;
             }
             break;
           }

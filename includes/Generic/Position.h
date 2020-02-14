@@ -1,6 +1,7 @@
 #pragma once
 
-#include <functional>
+#include <utility> // pair
+#include <functional> // std::hash
 
 namespace wubinboardgames
 {

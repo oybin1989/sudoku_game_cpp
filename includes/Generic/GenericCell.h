@@ -1,6 +1,5 @@
 #pragma once
 
-#include <utility>
 #include <iostream>
 
 #include "Position.h"
@@ -126,7 +125,7 @@ namespace wubinboardgames
   template<typename T, T MIN, unsigned int WIDTH>
   void GenericCell<T, MIN, WIDTH>::setPosition(const int & i, const int & j)
   {
-    position = std::pair<unsigned int, unsigned int>{i, j};
+    position = Position{i, j};
   }
 
   template<typename T, T MIN, unsigned int WIDTH>

@@ -25,7 +25,7 @@ namespace wubinboardgames
       NO_UNIQUE_SOLUTION = 1,
       EASY = 3000,
       MEDIUM = 30000,
-      HARD = 45000,
+      HARD = 50000,
       SAMURAI = 100000
     };
 
