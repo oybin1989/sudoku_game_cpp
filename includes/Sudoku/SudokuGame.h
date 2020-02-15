@@ -15,7 +15,6 @@
 */
 
 static std::mutex writting_board_mutex; //global mutex for multiple threads
-static bool is_work_done = false; // global bool state for multi-threading
 
 namespace wubinboardgames
 {
@@ -58,16 +57,15 @@ namespace wubinboardgames
       Other threads will discard the result and simply exit.
     */
     template<typename GameBoard>
-    void RoutineToGenerateBoard(std::shared_ptr<GameBoard> shared_board, const LEVEL level)
+    void RoutineToGenerateBoard(std::shared_ptr<GameBoard> shared_board, std::shared_ptr<bool> is_work_done, LEVEL level)
     {
       GameBoard work_board{GenerateSolvableBoard<GameBoard>(level)};
-      writting_board_mutex.lock();
-      if(is_work_done == false)
+      std::lock_guard<std::mutex> mutex_lock{writting_board_mutex};
+      if(*is_work_done == false)
       {
         *shared_board = work_board;
-        is_work_done = true;
+        *is_work_done = true;
       }
-      writting_board_mutex.unlock();
     }
 
 
@@ -110,20 +108,18 @@ namespace wubinboardgames
           break;
       }
       // set is_work_done back to false
-      writting_board_mutex.lock();
-      is_work_done = false;
-      writting_board_mutex.unlock();
+      std::shared_ptr<bool> is_work_done_shared = std::make_shared<bool>(false);
 
       for(auto i = 0; i < 4; ++i)
       {
         // start 4 threads for 4-core cpu.
         // do not pass any local reference to thread.
-        std::thread(RoutineToGenerateBoard<GameBoard>, shared_board, level).detach();
+        std::thread(RoutineToGenerateBoard<GameBoard>, shared_board, is_work_done_shared, level).detach();
       }
       std::cout <<"Four threads start..." << std::endl << std::endl;
       unsigned int percent = 0;
       std::cout <<"Generating..." << percent <<" %" << std::endl << std::endl;
-      while(!is_work_done)
+      while(!(*is_work_done_shared))
       {
         std::this_thread::sleep_for(std::chrono::seconds(1));
         percent += 10;
