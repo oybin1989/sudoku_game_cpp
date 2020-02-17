@@ -35,18 +35,27 @@ make sudoku_debug
 make sudoku_static
 ```
 
-#### To testing
-```bash
-make sudoku_testing
-```
-
 #### To build for diagnose
 ```bash
 make sudoku_diagnose
 ```
 
+## Test
+
+#### To run simple testing
+```bash
+make sudoku_testing
+```
+
+#### To run google unit testing
+```bash
+make sudoku_google_testing
+```
+> Due to C++ incompatible ABI, Unit testing may not be supported on MacOS yet. Please run it with Linux(Ubuntu or Centos)
+
+
 ## Note
 
-Binaries are going to be generated under bin folder.
-Bunch of board files are under bin folder.
-You may need access to write a game board to a file.
+- Binaries are going to be generated under bin folder.
+- Bunch of board files are under bin folder.
+- You may need access to write a game board to a file.
