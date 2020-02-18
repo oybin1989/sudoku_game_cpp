@@ -443,7 +443,7 @@ namespace wubinboardgames
           value  = *itr_list;
           work_board[pos/board_width][pos%board_width] = value;
 
-          // Bingo! we find a suitable final board.
+          // Bingo! we find a suitable value for the cell.
           if(IsBoardValid(work_board))
               break;
           // otherwise, remove the value and try another random value from the list.
