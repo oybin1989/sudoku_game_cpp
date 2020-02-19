@@ -1,5 +1,4 @@
 #include <iostream>
-#include <cstdlib>
 
 #include "Sudoku/SudokuEngine.h"
 #include "Sudoku/SudokuBoard.h"
@@ -44,7 +43,7 @@ namespace wubinboardgames
             break;
           case 3:
           default:
-            std::exit(0);
+            return;
         }
         option = 100;
       }
