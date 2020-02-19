@@ -149,7 +149,7 @@ namespace wubinboardgames
         std::cout << "\033[1;33m1. Solve Game \033[0m" << std::endl << std::endl;
         std::cout << "\033[1;33m2. Check Solutions \033[0m" << std::endl << std::endl;
         std::cout << "\033[1;33m3. Evaluate The Game \033[0m" << std::endl << std::endl;
-        std::cout << "\033[1;33m4. Genereate A New Game \033[0m" << std::endl<< std::endl;
+        std::cout << "\033[1;33m4. Generate A New Game \033[0m" << std::endl<< std::endl;
         std::cout << "\033[1;33m5. Write Game To File \033[0m" << std::endl << std::endl;
         std::cout << "\033[1;33m6. Print Current Game \033[0m" << std::endl << std::endl;
         std::cout << "\033[1;33m7. Reset Current Game \033[0m" << std::endl << std::endl;
